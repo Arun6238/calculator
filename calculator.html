@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link href="https://fonts.cdnfonts.com/css/seven-segment" rel="stylesheet">
+    <style>
+        @import url('https://fonts.cdnfonts.com/css/seven-segment');
+
+        .calculator-body{
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            padding: 30px 15px 35px;
+            transform: translate(-50%,-50%);
+            border-radius: 20px;
+
+
+            display: grid;
+            row-gap: 2em;
+            background-color: antiquewhite;
+            border: grey 2px solid;
+        }
+        .ans{
+            position: absolute;
+            left: 0;
+            right: 0;
+            padding-inline:2em ;
+
+            color:rgb(81, 255, 0);
+            font-size: 20px;
+            font-weight: bold;
+            letter-spacing: 1.2px;
+            text-align: end;
+            font-family: 'Seven Segment';
+        }
+        .inp-space{
+            padding-block: 70px 15px;
+            min-width: 400px;
+            background:black;
+            color:rgb(81, 255, 0);
+            padding-inline:.5em;
+            font-size: 28px;
+            font-weight: bold;
+            letter-spacing: 1.2px;
+            text-align: end;
+            font-family: 'Seven Segment';
+            border: 3px grey solid;
+            
+        }
+        .buttons{
+            display: grid;
+            grid-template-columns: auto auto auto auto;
+            grid-template-rows:60px 60px 60px 60px 60px ;
+            gap:5px;
+            
+        }
+        .buttons button{
+            font-weight: bold;
+            font-size: 1em;
+            border: 2px grey solid;
+            border-radius: 4px;
+        }
+        .btn11{
+            grid-column-start: 4;
+            /* grid-row-start:2;
+            grid-row-end: 4; */
+           
+        }
+        .btn17{
+            grid-column-start:4;
+            grid-row-start: 4;
+            grid-row-end: 6;
+        }
+        .btn15{
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-body">
+        
+        <div class="display-wrap">
+            <p class="ans"></p>
+            <input type="text" name="" id="" class="inp-space" >
+        </div>
+        <div class="buttons">
+            <button class="btn01">C</button>
+            <button class="btn02">( )</button>
+            <button class="btn03 opr">/</button>
+            <button class="btn04 opr">*</button>
+
+            <button class="btn05 num">7</button>
+            <button class="btn06 num">8</button>
+            <button class="btn07 num">9</button>
+
+            <button class="btn08 opr">-</button>
+            <button class="btn08 num">4</button>
+            <button class="btn09 num">5</button>
+            <button class="btn10 num">6</button>
+            <button class="btn11 opr">+</button>
+
+            <button class="btn12 num">1</button>
+            <button class="btn13 num">2</button>
+            <button class="btn14 num">3</button>
+
+            <button class="btn15 num">0</button>
+            <button class="btn16">.</button>
+            <button class="btn17 result">=</button>
+        </div>
+    </div>
+
+    <script>
+
+        const numbers  = document.querySelectorAll('.num')
+        const operators = document.querySelectorAll('.opr')
+        const result = document.querySelector('.result')
+        const displayAns = document.querySelector('.ans')
+
+        const inputSpace = document.querySelector('.inp-space')
+        const clrButton = document.querySelector('.btn01')
+        let expression = ''
+        const symbols = ['+','-','*','/']
+        inputSpace.value = 0;
+
+        // to check if an element is in an array
+        function checkElement(obj,e){
+            if(obj.indexOf(e)+1){
+                return true
+            }
+            else{
+                return false
+            }
+        }
+
+        for( let i of numbers){
+            i.addEventListener('click',function(){
+                add(i)
+            });
+        }
+
+        for(let i of operators){
+            i.addEventListener('click',function(){
+                addOperator(i)
+            })
+        }
+
+        clrButton.addEventListener('click',clear)
+
+        result.addEventListener('click',function(){
+            displayAns.innerHTML = expression
+            inputSpace.value = eval(expression)
+            expression =  inputSpace.value
+        })
+
+        function add(button){
+            let newDigit = button.innerHTML;
+
+            if(expression.length == 0 && newDigit == 0)
+                inputSpace.value = '0';
+
+            else{
+                expression += newDigit 
+                inputSpace.value = expression
+            }
+
+            console.log(expression);
+        }
+
+        function addOperator(o){
+            let operator = o.innerHTML;
+
+            if(!expression.length == 0 && !checkElement( symbols,expression[expression.length-1] ) ){
+                expression+=operator;
+                inputSpace.value = expression
+            }
+            else if(operator == '-' && expression[expression.length-1] != '-' )
+            {
+                expression+=operator;
+                inputSpace.value = expression
+            
+            }
+            console.log(expression);
+        }
+
+        function evaluate(e){
+            
+        }
+
+        function clear(){
+            inputSpace.value = "0";
+            displayAns.innerHTML = ''
+            expression = '';
+            // console.log(expression)
+            // expression = ''
+        }
+    </script>
+</body>
+</html>
